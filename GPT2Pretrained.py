@@ -26,22 +26,22 @@ class GPT2Pretrained:
         print(f'Your tokenized data is saved in the "{self.save_path}" folder.')
         
     def CreationGPT2(self):
-        tokenizer = GPT2Tokenizer.from_pretrained(self.save_path)
-        tokenizer.add_special_tokens({"eos_token": "</s>",
-                                      "bos_token": "<s>",
-                                      "unk_token": "<unk>",
-                                      "pad_token": "<pad>",
-                                      "mask_token": "<mask>"})
-        config = GPT2Config(vocab_size = tokenizer.vocab_size, 
-                            bos_token_id = tokenizer.bos_token_id, 
-                            eos_token_id = tokenizer.eos_token_id)
+        self.tokenizer = GPT2Tokenizer.from_pretrained(self.save_path)
+        self.tokenizer.add_special_tokens({"eos_token": "</s>",
+                                           "bos_token": "<s>",
+                                           "unk_token": "<unk>",
+                                           "pad_token": "<pad>",
+                                           "mask_token": "<mask>"})
+        config = GPT2Config(vocab_size = self.tokenizer.vocab_size, 
+                            bos_token_id = self.tokenizer.bos_token_id, 
+                            eos_token_id = self.tokenizer.eos_token_id)
         self.model = TFGPT2LMHeadModel(config)
         
     def EncodeTokenizer(self):
        SingleString = ''
        for filename in self.paths:
            with open(filename, "r", encoding='utf-8') as file:
-               SingleString += file.read() + self.tokenizer.eos_token
+               SingleString += file.read() + "</s>"
                file.close()
        self.stringTokenized = self.tokenizer.encode(SingleString)
        
@@ -86,51 +86,13 @@ class GPT2Pretrained:
         self.model = TFGPT2LMHeadModel.from_pretrained(pathLoadModel)
     
     def TextGenerator(self, text, maxLength = 100,numBeams = 5, temperature = 0.7, noRepeatNgramSize = 2, numReturnSequences = 5 ):
-        assert text == "" and len(text)>= 10, "The method receives a phrase of at least 10 words."
         InputIds = self.tokenizer.encode(text, return_tensors='tf')
-        # getting out output
         Output = self.model.generate(InputIds,
-                                     maxLength = maxLength, 
+                                     max_length = maxLength, 
                                      num_beams = numBeams,
                                      temperature = temperature,
                                      no_repeat_ngram_size = noRepeatNgramSize,
                                      num_return_sequences = numReturnSequences)
         self.generatedText = self.tokenizer.decode(Output[0])
         print(self.generatedText)
-            
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         

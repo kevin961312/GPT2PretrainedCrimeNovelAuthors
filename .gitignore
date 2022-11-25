@@ -1,0 +1,13 @@
+
+model_bn_custom/config.json
+model_bn_custom/merges.txt
+model_bn_custom/special_tokens_map.json
+model_bn_custom/tf_model.h5
+model_bn_custom/tokenizer_config.json
+model_bn_custom/vocab.json
+TokenizedData/merges.txt
+TokenizedData/vocab.json
+.ipynb_checkpoints/LoadModelJupyter-checkpoint.ipynb
+.ipynb_checkpoints/LoadModel-checkpoint.py
+__pycache__/gpt2pretrained.cpython-39.pyc
+AllPrhase.txt
